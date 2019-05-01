@@ -105,7 +105,7 @@ class GRUCellEx(nn.GRUCell):
             input = nnf.sigmoid(self._modules['ig'](hidden)) * input
 
         # GRUCell in https://github.com/pytorch/pytorch/blob/master/torch/nn/_functions/rnn.py extended with layer normalization
-        if input.is_cuda:
+        if input.is_cuda and torch.__version__.split('.')[0] == '0':
             gi = nnf.linear(input, self.weight_ih)
             gh = nnf.linear(hidden, self.weight_hh)
             gi, gh = self._normalize(gi, gh)
@@ -160,7 +160,7 @@ class LSTMCellEx(nn.LSTMCell):
             input = nnf.sigmoid(self._modules['ig'](hidden[0])) * input
 
         # GRUCell in https://github.com/pytorch/pytorch/blob/master/torch/nn/_functions/rnn.py extended with layer normalization
-        if input.is_cuda:
+        if input.is_cuda and torch.__version__.split('.')[0] == '0':
             gi = nnf.linear(input, self.weight_ih)
             gh = nnf.linear(hidden[0], self.weight_hh)
             gi, gh = self._normalize(gi, gh)

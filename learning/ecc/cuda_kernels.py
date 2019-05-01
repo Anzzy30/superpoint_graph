@@ -119,7 +119,7 @@ def conv_aggregate_fw(dest, src, degs):
     blockDimY = n // (1024/(w//32+1)) +1 # try to occuppy 1024 threads by splitting also over nodes
     function, stream = get_kernel_func('conv_aggregate_fw_kernel_v2', conv_aggregate_fw_kernel_v2(), get_dtype(src))
     function(args=[dest.data_ptr(), src.data_ptr(), degs.data_ptr(), csdegs.data_ptr(), np.int32(w), np.int32(n), np.int32(dest.stride(0)), np.int32(src.stride(0)), np.int32(blockDimY)], 
-             block=(CUDA_NUM_THREADS,1,1), grid=(GET_BLOCKS(w),n//blockDimY+1,1), stream=stream)            
+             block=(CUDA_NUM_THREADS,1,1), grid=(GET_BLOCKS(w),n//blockDimY,1), stream=stream)
                                          
 def conv_aggregate_bw(dest, src, degs):
     n = degs.numel()
@@ -131,7 +131,7 @@ def conv_aggregate_bw(dest, src, degs):
     blockDimY = n // (1024/(w//32+1)) +1 # try to occuppy 1024 threads by splitting also over nodes
     function, stream = get_kernel_func('conv_aggregate_bw_kernel_v2', conv_aggregate_bw_kernel_v2(), get_dtype(src))
     function(args=[dest.data_ptr(), src.data_ptr(), degs.data_ptr(), csdegs.data_ptr(), np.int32(w), np.int32(n), np.int32(dest.stride(0)), np.int32(src.stride(0)), np.int32(blockDimY)],
-             block=(CUDA_NUM_THREADS,1,1), grid=(GET_BLOCKS(w),n//blockDimY+1,1), stream=stream)
+             block=(CUDA_NUM_THREADS,1,1), grid=(GET_BLOCKS(w),n//blockDimY,1), stream=stream)
                                          
 
 
